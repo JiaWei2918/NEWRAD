@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contact - My Website</title>
   <link rel="stylesheet" href="style.css">
+  <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-database.js"></script>
 </head>
 <body>
   <nav>
@@ -29,5 +31,47 @@
     <p id="status"></p>
   </section>
   <script src="script.js"></script>
+  <script>
+    // Firebase configuration (same as shown above)
+    const firebaseConfig = {
+      apiKey: "AIzaSyAi9neqoH67SXQ2JRxkVY_bl9xGCoHeYUI",
+      authDomain: "rad-tjw.firebaseapp.com",
+      databaseURL: "https://rad-tjw-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "rad-tjw",
+      storageBucket: "rad-tjw.appspot.com",
+      messagingSenderId: "574586917129",
+      appId: "1:574586917129:web:58f1cc2bce700a0ecf83d8",
+      measurementId: "G-LPQKCZ7ZSF"
+    };
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    firebase.initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const db = firebase.database().ref('contactSubmissions');
+
+    // Function to save form data to Firebase
+    function saveContactForm(name, email, message) {
+      const newContactRef = db.push();
+      newContactRef.set({
+        name: name,
+        email: email,
+        message: message
+      });
+    }
+
+    // Handle form submission
+    function handleFormSubmit(event) {
+      event.preventDefault();
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const message = document.getElementById('message').value;
+
+      saveContactForm(name, email, message);
+
+      // Clear the form
+      document.getElementById('contactForm').reset();
+      document.getElementById('status').textContent = "Form submitted successfully!";
+    }
+  </script>
 </body>
 </html>

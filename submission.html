@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Submissions</title>
+  <link rel="stylesheet" href="styles.css">
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-database.js"></script>
+
+  <script>
+    // Firebase configuration (same as previous)
+    const firebaseConfig = {
+      apiKey: "AIzaSyAi9neqoH67SXQ2JRxkVY_bl9xGCoHeYUI",
+      authDomain: "rad-tjw.firebaseapp.com",
+      databaseURL: "https://rad-tjw-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "rad-tjw",
+      storageBucket: "rad-tjw.appspot.com",
+      messagingSenderId: "574586917129",
+      appId: "1:574586917129:web:58f1cc2bce700a0ecf83d8",
+      measurementId: "G-LPQKCZ7ZSF"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database().ref('contactSubmissions');
+
+    // Function to display contact submissions
+    function displaySubmissions() {
+      const submissionsContainer = document.getElementById('submissions');
+      db.on('value', function(snapshot) {
+        const data = snapshot.val();
+        submissionsContainer.innerHTML = '';  // Clear previous data
+        for (let key in data) {
+          const submission = data[key];
+          const entry = `
+            <div class="submission">
+              <h3>${submission.name}</h3>
+              <p>Email: ${submission.email}</p>
+              <p>Message: ${submission.message}</p>
+            </div>
+          `;
+          submissionsContainer.innerHTML += entry;
+        }
+      });
+    }
+
+    window.onload = displaySubmissions;
+  </script>
+</head>
+<body>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+  <section>
+    <h1>Contact Submissions</h1>
+    <div id="submissions"></div>
+  </section>
+</body>
+</html>
